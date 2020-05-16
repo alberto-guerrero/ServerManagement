@@ -1,0 +1,63 @@
+﻿@page "/storage"
+
+@using ServerManagement.Detectors.Requests.Storage;
+@using ServerManagement.Detectors.Responses.Storage;
+@inject MediatR.IMediator Mediator;
+
+<h1>Storage</h1>
+
+@if (disks == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="row">
+        @for (int i = 0; i < 10; i++)
+        @foreach (var disk in disks)
+        {
+            <div class="col-4 m-2 border border-secondary">
+                <span class="oi oi-hard-drive" aria-hidden="true"></span> @GetDriveAndLetter(disk)
+                <div class="progress">
+                    <div class="progress-bar"
+                         role="progressbar"
+                         style="width: @UsedSpacePercentageString(disk)%"
+                         aria-valuenow="@UsedSpacePercentageString(disk)"
+                         aria-valuemin="0"
+                         aria-valuemax="100">
+                    </div>
+                </div>
+                @GetCapacityString(disk)
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<DiskDrive> disks;
+
+    protected override async Task OnInitializedAsync()
+    {
+        disks = await Mediator.Send(new GetDrivesRequest());
+    }
+
+    string GetDriveAndLetter(DiskDrive drive)
+    {
+        return !string.IsNullOrEmpty(drive.VolumeName)
+            ? $"{drive.DriveLetter} ({drive.VolumeName})"
+            : drive.DriveLetter;
+    }
+
+    string GetCapacityString(DiskDrive drive)
+    {
+        return (drive.DriveType == 3)
+            ? $"{drive.FreeSpaceString} free of {drive.CapacityString}"
+            : drive.CapacityString;
+    }
+
+    string UsedSpacePercentageString(DiskDrive drive)
+    {
+        int percentage = (int)(drive.UsedSpacePercentage * (int)100);
+        return percentage.ToString();
+    }
+}
