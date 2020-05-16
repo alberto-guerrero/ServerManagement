@@ -1,0 +1,41 @@
+﻿@page "/updates"
+
+@using ServerManagement.Detectors.Requests.Updates;
+@inject MediatR.IMediator Mediator;
+
+<h1>Windows Updates</h1>
+
+@if (updates == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Update ID</th>
+                <th>Installed Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var update in updates)
+            {
+                <tr>
+                    <td><a href="@update.ExternalLink" class="badge badge-info" target="_blank">@update.UpdateId</a></td>
+                    <td>@update.InstallDate.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<ServerManagement.Detectors.Responses.Updates.WindowsUpdate> updates;
+
+    protected override async Task OnInitializedAsync()
+    {
+        updates = await Mediator.Send(new DetectRequest());
+        updates = updates.OrderByDescending(u => u.InstallDate).ToList();
+    }
+}

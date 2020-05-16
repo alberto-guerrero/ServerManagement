@@ -1,10 +1,8 @@
 ﻿using MediatR;
 using ServerManagement.Detectors.Requests.Services;
 using ServerManagement.Detectors.Responses.Services;
-using System;
 using System.Collections.Generic;
 using System.Management;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,7 +34,6 @@ namespace ServerManagement.Detectors.Handlers.Services
                     State = m["State"]?.ToString() ?? string.Empty
                 });
             }
-
 
             return Task.FromResult(services);
         }

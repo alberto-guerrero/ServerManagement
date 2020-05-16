@@ -25,7 +25,6 @@ namespace ServerManagement.Client.Web
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            //services.AddSingleton<IDetector<Service>, ServiceDetector>();
             services.AddMediatR(typeof(DetectRequest));
         }
 
