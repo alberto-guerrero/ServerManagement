@@ -1,6 +1,6 @@
 ﻿@page "/updates"
 
-@using ServerManagement.Detectors.Requests.Updates;
+@using ServerManagement.Core.Requests.Updates;
 @inject MediatR.IMediator Mediator;
 
 <h1>Windows Updates</h1>
@@ -31,7 +31,7 @@ else
 }
 
 @code {
-    private List<ServerManagement.Detectors.Responses.Updates.WindowsUpdate> updates;
+    private List<ServerManagement.Core.Responses.Updates.WindowsUpdate> updates;
 
     protected override async Task OnInitializedAsync()
     {

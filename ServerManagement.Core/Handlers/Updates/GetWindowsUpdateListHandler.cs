@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using ServerManagement.Detectors.Requests.Updates;
-using ServerManagement.Detectors.Responses.Updates;
+using ServerManagement.Core.Requests.Updates;
+using ServerManagement.Core.Responses.Updates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Management;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ServerManagement.Detectors.Handlers.Updates
+namespace ServerManagement.Core.Handlers.Updates
 {
     public class GetWindowsUpdateListHandler : IRequestHandler<GetWindowsUpdateListRequest, List<WindowsUpdate>>
     {

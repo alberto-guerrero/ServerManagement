@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ServerManagement.Detectors.Responses.Updates
+namespace ServerManagement.Core.Responses.Updates
 {
     public class WindowsUpdate
     {

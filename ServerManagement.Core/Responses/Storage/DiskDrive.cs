@@ -1,4 +1,4 @@
-﻿namespace ServerManagement.Detectors.Responses.Storage
+﻿namespace ServerManagement.Core.Responses.Storage
 {
     public class DiskDrive
     {

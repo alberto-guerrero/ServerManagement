@@ -1,8 +1,8 @@
-﻿using ServerManagement.Detectors.Responses.Storage;
+﻿using ServerManagement.Core.Responses.Storage;
 using System;
 using System.Collections.Generic;
 
-namespace ServerManagement.Detectors.Requests.Storage
+namespace ServerManagement.Core.Requests.Storage
 {
     public class GetDrivesRequest : MediatR.IRequest<List<DiskDrive>>
     {

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ServerManagement.Client.Web.Data;
-using ServerManagement.Detectors.Requests.Services;
+using ServerManagement.Core.Requests.Services;
 
 namespace ServerManagement.Client.Web
 {

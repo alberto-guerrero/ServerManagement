@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using ServerManagement.Detectors.Responses.Updates;
+using ServerManagement.Core.Responses.Updates;
 using System;
 using System.Collections.Generic;
 
-namespace ServerManagement.Detectors.Requests.Updates
+namespace ServerManagement.Core.Requests.Updates
 {
     public class GetWindowsUpdateListRequest : IRequest<List<WindowsUpdate>>
     {

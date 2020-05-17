@@ -1,13 +1,13 @@
 ﻿using MediatR;
-using ServerManagement.Detectors.Requests.Storage;
-using ServerManagement.Detectors.Responses.Storage;
+using ServerManagement.Core.Requests.Storage;
+using ServerManagement.Core.Responses.Storage;
 using System;
 using System.Collections.Generic;
 using System.Management;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ServerManagement.Detectors.Handlers.Storage
+namespace ServerManagement.Core.Handlers.Storage
 {
     public class GetDrivesRequestHandler : IRequestHandler<GetDrivesRequest, List<DiskDrive>>
     {

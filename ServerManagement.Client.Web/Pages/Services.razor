@@ -1,6 +1,6 @@
 ﻿@page "/services"
 
-@using ServerManagement.Detectors.Requests.Services;
+@using ServerManagement.Core.Requests.Services;
 @inject MediatR.IMediator Mediator;
 
 <h1>Services</h1>
@@ -50,7 +50,7 @@ else
 }
 
 @code {
-    private List<ServerManagement.Detectors.Responses.Services.Service> services;
+    private List<ServerManagement.Core.Responses.Services.Service> services;
 
     protected override async Task OnInitializedAsync()
     {

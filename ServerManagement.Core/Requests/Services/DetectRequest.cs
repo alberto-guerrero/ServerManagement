@@ -1,8 +1,8 @@
-﻿using ServerManagement.Detectors.Responses.Services;
+﻿using ServerManagement.Core.Responses.Services;
 using System;
 using System.Collections.Generic;
 
-namespace ServerManagement.Detectors.Requests.Services
+namespace ServerManagement.Core.Requests.Services
 {
     public class GetServiceList : MediatR.IRequest<List<Service>>
     {

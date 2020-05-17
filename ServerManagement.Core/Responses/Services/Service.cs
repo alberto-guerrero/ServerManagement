@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ServerManagement.Detectors.Responses.Services
+namespace ServerManagement.Core.Responses.Services
 {
     public class Service
     {

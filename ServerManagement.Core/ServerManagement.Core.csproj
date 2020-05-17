@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <AssemblyName>ServerManagement.Detectors</AssemblyName>
-    <RootNamespace>ServerManagement.Detectors</RootNamespace>
+    <AssemblyName>ServerManagement.Core</AssemblyName>
+    <RootNamespace>ServerManagement.Core</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

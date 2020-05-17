@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerManagement.Detectors", "ServerManagement\ServerManagement.Detectors.csproj", "{9D37333C-BCE2-48CB-A3D2-FA4613BF829D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerManagement.Core", "ServerManagement.Core\ServerManagement.Core.csproj", "{9D37333C-BCE2-48CB-A3D2-FA4613BF829D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerManagement.Client.Web", "ServerManagement.Client.Web\ServerManagement.Client.Web.csproj", "{5A59042C-071F-4AFD-88A8-4D414C254F46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerManagement.Client.Web", "ServerManagement.Client.Web\ServerManagement.Client.Web.csproj", "{5A59042C-071F-4AFD-88A8-4D414C254F46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

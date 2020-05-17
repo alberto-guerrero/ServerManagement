@@ -1,13 +1,13 @@
 ﻿using MediatR;
-using ServerManagement.Detectors.Requests.Services;
-using ServerManagement.Detectors.Responses.Services;
+using ServerManagement.Core.Requests.Services;
+using ServerManagement.Core.Responses.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ServerManagement.Detectors.Handlers.Services
+namespace ServerManagement.Core.Handlers.Services
 {
     public class GetServiceListRequestHandler : IRequestHandler<GetServiceList, List<Service>>
     {
