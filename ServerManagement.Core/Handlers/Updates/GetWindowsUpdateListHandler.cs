@@ -26,8 +26,8 @@ namespace ServerManagement.Core.Handlers.Updates
                 {
                     UpdateId = m["HotFixID"]?.ToString() ?? string.Empty,
                     InstallDate = (DateTime.TryParse(m["InstalledOn"]?.ToString(), out DateTime installDate))
-                                        ? default
-                                        : installDate
+                                        ? installDate
+                                        : default
                 })
                 .Where(update => !string.IsNullOrEmpty(update.UpdateId))
                 .ToList();
