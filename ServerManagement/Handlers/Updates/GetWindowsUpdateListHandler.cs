@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ServerManagement.Detectors.Handlers.Updates
 {
-    public class GetWindowsUpdateList : IRequestHandler<GetWindowsUpdateListRequest, List<WindowsUpdate>>
+    public class GetWindowsUpdateListHandler : IRequestHandler<GetWindowsUpdateListRequest, List<WindowsUpdate>>
     {
         public Task<List<WindowsUpdate>> Handle(GetWindowsUpdateListRequest request, CancellationToken cancellationToken)
         {        
