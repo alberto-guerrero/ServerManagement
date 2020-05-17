@@ -18,6 +18,7 @@ else
                 <th>Display Name</th>
                 <th>State</th>
                 <th>Startup Type</th>
+                <th>Run As</th>
             </tr>
         </thead>
         <tbody>
@@ -41,6 +42,7 @@ else
                 <td>@service.DisplayName</td>
                 <td class="@classState(service.State)">@service.State</td>
                 <td>@service.StartupType</td>
+                <td>@service.LogOnAs</td>
             </tr>
             }
         </tbody>
