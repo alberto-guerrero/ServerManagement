@@ -54,7 +54,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        services = await Mediator.Send(new DetectRequest());
+        services = await Mediator.Send(new GetServiceList());
     }
 
     public string classState(string state)

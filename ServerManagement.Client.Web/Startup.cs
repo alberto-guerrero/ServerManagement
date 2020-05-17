@@ -25,7 +25,7 @@ namespace ServerManagement.Client.Web
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
-            services.AddMediatR(typeof(DetectRequest));
+            services.AddMediatR(typeof(GetServiceList));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
