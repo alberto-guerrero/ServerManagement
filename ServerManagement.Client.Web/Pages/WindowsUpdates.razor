@@ -35,7 +35,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        updates = await Mediator.Send(new DetectRequest());
+        updates = await Mediator.Send(new GetWindowsUpdateListRequest());
         updates = updates.OrderByDescending(u => u.InstallDate).ToList();
     }
 }

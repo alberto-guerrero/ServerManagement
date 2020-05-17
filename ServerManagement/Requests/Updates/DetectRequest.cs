@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ServerManagement.Detectors.Requests.Updates
 {
-    public class DetectRequest : IRequest<List<WindowsUpdate>>
+    public class GetWindowsUpdateListRequest : IRequest<List<WindowsUpdate>>
     {
         public string ComputerName { get; set; } = Environment.MachineName;
     }
