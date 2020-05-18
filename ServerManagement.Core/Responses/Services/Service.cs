@@ -14,6 +14,6 @@ namespace ServerManagement.Core.Responses.Services
         public string PathName { get; internal set; }
         public string StartupType { get; internal set; }
         public string LogOnAs { get; internal set; }
-        public string State { get; internal set; }
+        public string State { get; set; }
     }
 }

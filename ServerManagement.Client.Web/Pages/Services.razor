@@ -1,6 +1,7 @@
 ﻿@page "/services"
 
 @using ServerManagement.Core.Requests.Services;
+@using ServerManagement.Core.Responses.Services;
 @inject MediatR.IMediator Mediator;
 
 <h1>Services</h1>
@@ -24,33 +25,32 @@ else
         <tbody>
             @foreach (var service in services)
             {
-            <tr>
-                <td>
-                    <div>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="oi oi-ellipses"></span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Separated link</a>
+                <tr>
+                    <td>
+                        <div>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" 
+                                    @onclick="e => this.showActionMenu=!this.showActionMenu "
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="oi oi-ellipses"></span>
+                            </button>
+                            <div class="dropdown-menu @(showActionMenu? "show":"")" >
+                                <input type="button" class="dropdown-item" @onclick="e => StopService(service)" value="Stop Service" />
+                                <input type="button" class="dropdown-item" @onclick="e => StartService(service)" value="Start Service" />
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td>@service.DisplayName</td>
-                <td class="@classState(service.State)">@service.State</td>
-                <td>@service.StartupType</td>
-                <td>@service.LogOnAs</td>
-            </tr>
+                    </td>
+                    <td>@service.DisplayName</td>
+                    <td class="@classState(service.State)">@service.State</td>
+                    <td>@service.StartupType</td>
+                    <td>@service.LogOnAs</td>
+                </tr>
             }
         </tbody>
     </table>
 }
 
 @code {
-    private List<ServerManagement.Core.Responses.Services.Service> services;
+    private List<Service> services;
 
     protected override async Task OnInitializedAsync()
     {
@@ -68,5 +68,21 @@ else
             default:
                 return null;
         }
+    }
+
+    private bool showActionMenu;
+
+    private void StopService(Service service)
+    {
+        var state = Mediator.Send(new StopServiceRequest() { ServiceName = service.DisplayName });
+        service.State = state.Result.ToString();
+        showActionMenu = false;
+    }
+
+    private void StartService(Service service)
+    {
+        var state = Mediator.Send(new StartServiceRequest() { ServiceName = service.DisplayName });
+        service.State = state.Result.ToString();
+        showActionMenu = false;
     }
 }
