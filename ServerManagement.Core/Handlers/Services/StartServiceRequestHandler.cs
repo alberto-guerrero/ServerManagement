@@ -14,7 +14,10 @@ namespace ServerManagement.Core.Handlers.Services
 
             // Start Service
             var sc = new ServiceController(request.ServiceName);
-            sc.Start();
+            
+            // Only start if it's not already running
+            if (sc.Status != ServiceControllerStatus.Running)
+                sc.Start();
             
             // Return current status
             return Task.FromResult(sc.Status);

@@ -12,6 +12,23 @@
 }
 else
 {
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search"
+               aria-label="Search" aria-describedby="basic-addon2"
+               @bind="searchText"
+               @onkeyup="@(async e=>
+                           {
+                               if (e.Key == "Enter")
+                                   await GetServices();
+                           })">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary"
+                    type="button"
+                    @onclick="async e=> { await GetServices(); }">
+                Search
+            </button>
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -28,12 +45,12 @@ else
                 <tr>
                     <td>
                         <div>
-                            <button type="button" class="btn btn-outline-secondary btn-sm" 
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
                                     @onclick="e => this.showActionMenu=!this.showActionMenu "
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="oi oi-ellipses"></span>
                             </button>
-                            <div class="dropdown-menu @(showActionMenu? "show":"")" >
+                            <div class="dropdown-menu @(showActionMenu? "show":"")">
                                 <input type="button" class="dropdown-item" @onclick="e => StopService(service)" value="Stop Service" />
                                 <input type="button" class="dropdown-item" @onclick="e => StartService(service)" value="Start Service" />
                             </div>
@@ -52,10 +69,7 @@ else
 @code {
     private List<Service> services;
 
-    protected override async Task OnInitializedAsync()
-    {
-        services = await Mediator.Send(new GetServiceList());
-    }
+    protected override async Task OnInitializedAsync() => await GetServices();
 
     public string classState(string state)
     {
@@ -71,6 +85,22 @@ else
     }
 
     private bool showActionMenu;
+    private string searchText;
+
+    private async Task GetServices()
+    {
+        services = await Mediator.Send(new GetServiceList()
+        {
+            Filter = (service) =>
+            {
+                if (string.IsNullOrEmpty(searchText))
+                    return true;
+
+                return service.DisplayName.Contains(searchText, StringComparison.OrdinalIgnoreCase)
+                        || service.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+            }
+        });
+    }
 
     private void StopService(Service service)
     {

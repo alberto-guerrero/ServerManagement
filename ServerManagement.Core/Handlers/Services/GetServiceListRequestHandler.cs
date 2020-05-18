@@ -2,6 +2,7 @@
 using ServerManagement.Core.Requests.Services;
 using ServerManagement.Core.Responses.Services;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Management;
 using System.Threading;
@@ -34,6 +35,7 @@ namespace ServerManagement.Core.Handlers.Services
                     LogOnAs = m["StartName"]?.ToString() ?? string.Empty,
                     State = m["State"]?.ToString() ?? string.Empty
                 })
+                .Where(request.Filter)
                 .ToList();
 
             return Task.FromResult(services);
