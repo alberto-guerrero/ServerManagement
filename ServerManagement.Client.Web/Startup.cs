@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ServerManagement.Client.Web.Data;
 using ServerManagement.Core.Requests.Services;
 
 namespace ServerManagement.Client.Web
@@ -24,7 +23,6 @@ namespace ServerManagement.Client.Web
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
             services.AddMediatR(typeof(GetServiceList));
         }
 
