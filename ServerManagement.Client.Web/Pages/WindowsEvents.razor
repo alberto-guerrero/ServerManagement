@@ -1,0 +1,47 @@
+﻿@page "/events"
+
+@using ServerManagement.Core.Requests.Events;
+@inject MediatR.IMediator Mediator;
+
+<h1>Windows Event Logs</h1>
+
+@if (events == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Level</th>
+                <th>Date/Time</th>
+                <th>Source</th>
+                <th>Event Id</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in events.First(e=> e.Log == "Application")
+                                                                      .Entries
+                                                                      .Cast<System.Diagnostics.EventLogEntry>()
+                                                                      .OrderByDescending(o=> o.TimeGenerated))
+            {
+            <tr>
+                <td>@entry.EntryType</td>
+                <td>@entry.TimeGenerated</td>
+                <td>@entry.Source</td>
+                <td>@entry.InstanceId</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<System.Diagnostics.EventLog> events;
+
+    protected override async Task OnInitializedAsync()
+    {
+        events = await Mediator.Send(new GetEventsRequest());
+    }
+}
