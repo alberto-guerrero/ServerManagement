@@ -1,20 +1,23 @@
 ﻿using MediatR;
-using ServerManagement.Core.Requests.Storage;
-using ServerManagement.Core.Responses.Storage;
 using System;
 using System.Collections.Generic;
 using System.Management;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ServerManagement.Core.Handlers.Storage
+namespace ServerManagement.Core.Storage.Queries.GetDrives
 {
-    public class GetDrivesRequestHandler : IRequestHandler<GetDrivesRequest, List<DiskDrive>>
+    public class GetDrivesRequest : MediatR.IRequest<List<DiskDriveDto>>
     {
-        public Task<List<DiskDrive>> Handle(GetDrivesRequest request, CancellationToken cancellationToken)
+        public string ComputerName { get; set; } = Environment.MachineName;
+    }
+
+    public class GetDrivesRequestHandler : IRequestHandler<GetDrivesRequest, List<DiskDriveDto>>
+    {
+        public Task<List<DiskDriveDto>> Handle(GetDrivesRequest request, CancellationToken cancellationToken)
         {
             // Use WMI to retrieve a list of storage devices.
-            var drives = new List<DiskDrive>();
+            var drives = new List<DiskDriveDto>();
 
             // Setup WMI query.
             var scope = new ManagementScope($@"\\{request.ComputerName}\root\CIMV2");
@@ -24,22 +27,22 @@ namespace ServerManagement.Core.Handlers.Storage
             // Retrieve a list of storage devices.
             foreach (ManagementObject m in searcher.Get())
             {
-                var drive = new DiskDrive();
+                var drive = new DiskDriveDto();
 
                 drive.DriveLetter = m["Name"]?.ToString() ?? string.Empty;
                 drive.VolumeName = m["VolumeName"]?.ToString() ?? string.Empty;
-                drive.Capacity = (UInt64)((ulong?)m["Size"] ?? 0);
-                drive.FreeSpace = (m["FreeSpace"] != null) ? (UInt64)m["FreeSpace"] : 0;
+                drive.Capacity = (ulong?)m["Size"] ?? 0;
+                drive.FreeSpace = m["FreeSpace"] != null ? (ulong)m["FreeSpace"] : 0;
                 drive.UsedSpace = drive.Capacity - drive.FreeSpace;
-                drive.DriveType = (UInt32)m["DriveType"];
+                drive.DriveType = (uint)m["DriveType"];
 
-                double bytes = (double)drive.Capacity;
+                double bytes = drive.Capacity;
                 switch (drive.DriveType)
                 {
-                    case (2):
+                    case 2:
                         drive.CapacityString = "Removable";
                         break;
-                    case (5):
+                    case 5:
                         drive.CapacityString = "CD-ROM";
                         break;
                     default:
@@ -47,11 +50,11 @@ namespace ServerManagement.Core.Handlers.Storage
                         break;
                 }
 
-                bytes = (double)drive.FreeSpace;
-                drive.FreeSpaceString = (drive.DriveType == 2 || drive.DriveType == 5) ? string.Empty : ConvertBytesToString(bytes);
+                bytes = drive.FreeSpace;
+                drive.FreeSpaceString = drive.DriveType == 2 || drive.DriveType == 5 ? string.Empty : ConvertBytesToString(bytes);
 
-                bytes = (double)drive.UsedSpace;
-                drive.UsedSpaceString = (drive.DriveType == 2 || drive.DriveType == 5) ? string.Empty : ConvertBytesToString(bytes);
+                bytes = drive.UsedSpace;
+                drive.UsedSpaceString = drive.DriveType == 2 || drive.DriveType == 5 ? string.Empty : ConvertBytesToString(bytes);
 
                 drives.Add(drive);
             }

@@ -1,6 +1,4 @@
 ﻿using MediatR;
-using ServerManagement.Core.Requests.Updates;
-using ServerManagement.Core.Responses.Updates;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +6,17 @@ using System.Management;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ServerManagement.Core.Handlers.Updates
+namespace ServerManagement.Core.WindowsUpdates.Queries.GetWindowsUpdates
 {
-    public class GetWindowsUpdateListHandler : IRequestHandler<GetWindowsUpdateListRequest, List<WindowsUpdate>>
+    public class GetWindowsUpdateListRequest : IRequest<List<WindowsUpdateDto>>
     {
-        public Task<List<WindowsUpdate>> Handle(GetWindowsUpdateListRequest request, CancellationToken cancellationToken)
-        {        
+        public string ComputerName { get; set; } = Environment.MachineName;
+    }
+
+    public class GetWindowsUpdateListHandler : IRequestHandler<GetWindowsUpdateListRequest, List<WindowsUpdateDto>>
+    {
+        public Task<List<WindowsUpdateDto>> Handle(GetWindowsUpdateListRequest request, CancellationToken cancellationToken)
+        {
             // Setup WMI query.
             var scope = new ManagementScope($@"\\{request.ComputerName}\root\CIMV2");
             var query = new ObjectQuery("SELECT HotFixID,InstalledOn FROM Win32_QuickFixEngineering WHERE HotFixID <> 'File 1'");
@@ -22,10 +25,10 @@ namespace ServerManagement.Core.Handlers.Updates
             var updates = searcher
                 .Get()
                 .Cast<ManagementObject>()
-                .Select(m => new WindowsUpdate
+                .Select(m => new WindowsUpdateDto
                 {
                     UpdateId = m["HotFixID"]?.ToString() ?? string.Empty,
-                    InstallDate = (DateTime.TryParse(m["InstalledOn"]?.ToString(), out DateTime installDate))
+                    InstallDate = DateTime.TryParse(m["InstalledOn"]?.ToString(), out DateTime installDate)
                                         ? installDate
                                         : default
                 })

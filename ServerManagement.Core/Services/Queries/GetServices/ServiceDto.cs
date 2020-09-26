@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ServerManagement.Core.Responses.Services
+﻿namespace ServerManagement.Core.Services.Queries.GetServices
 {
-    public class Service
+    public class ServiceDto
     {
         public string DisplayName { get; internal set; }
         public bool AcceptPause { get; internal set; }

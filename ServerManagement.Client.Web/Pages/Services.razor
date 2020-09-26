@@ -1,7 +1,8 @@
 ﻿@page "/services"
 
-@using ServerManagement.Core.Requests.Services;
-@using ServerManagement.Core.Responses.Services;
+@using ServerManagement.Core.Services.Queries.GetServices;
+@using ServerManagement.Core.Services.Commands.StartService;
+@using ServerManagement.Core.Services.Commands.StopService;
 @inject MediatR.IMediator Mediator;
 
 <h1>Services</h1>
@@ -67,7 +68,7 @@ else
 }
 
 @code {
-    private List<Service> services;
+    private List<ServiceDto> services;
 
     protected override async Task OnInitializedAsync() => await GetServices();
 
@@ -89,7 +90,7 @@ else
 
     private async Task GetServices()
     {
-        services = await Mediator.Send(new GetServiceList()
+        services = await Mediator.Send(new GetServices()
         {
             Filter = (service) =>
             {
@@ -102,14 +103,14 @@ else
         });
     }
 
-    private void StopService(Service service)
+    private void StopService(ServiceDto service)
     {
         var state = Mediator.Send(new StopServiceRequest() { ServiceName = service.DisplayName });
         service.State = state.Result.ToString();
         showActionMenu = false;
     }
 
-    private void StartService(Service service)
+    private void StartService(ServiceDto service)
     {
         var state = Mediator.Send(new StartServiceRequest() { ServiceName = service.DisplayName });
         service.State = state.Result.ToString();

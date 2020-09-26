@@ -1,7 +1,6 @@
 ﻿@page "/storage"
 
-@using ServerManagement.Core.Requests.Storage;
-@using ServerManagement.Core.Responses.Storage;
+@using ServerManagement.Core.Storage.Queries.GetDrives;
 @inject MediatR.IMediator Mediator;
 
 <h1>Storage</h1>
@@ -33,28 +32,28 @@ else
 }
 
 @code {
-    private List<DiskDrive> disks;
+    private List<DiskDriveDto> disks;
 
     protected override async Task OnInitializedAsync()
     {
         disks = await Mediator.Send(new GetDrivesRequest());
     }
 
-    string GetDriveAndLetter(DiskDrive drive)
+    string GetDriveAndLetter(DiskDriveDto drive)
     {
         return !string.IsNullOrEmpty(drive.VolumeName)
             ? $"{drive.DriveLetter} ({drive.VolumeName})"
             : drive.DriveLetter;
     }
 
-    string GetCapacityString(DiskDrive drive)
+    string GetCapacityString(DiskDriveDto drive)
     {
         return (drive.DriveType == 3)
             ? $"{drive.FreeSpaceString} free of {drive.CapacityString}"
             : drive.CapacityString;
     }
 
-    string UsedSpacePercentageString(DiskDrive drive)
+    string UsedSpacePercentageString(DiskDriveDto drive)
     {
         int percentage = (int)(drive.UsedSpacePercentage * (int)100);
         return percentage.ToString();

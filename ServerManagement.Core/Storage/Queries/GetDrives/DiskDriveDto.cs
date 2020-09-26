@@ -1,6 +1,6 @@
-﻿namespace ServerManagement.Core.Responses.Storage
+﻿namespace ServerManagement.Core.Storage.Queries.GetDrives
 {
-    public class DiskDrive
+    public class DiskDriveDto
     {
         public string DriveLetter { get; set; }
         public ulong Capacity { get; set; }

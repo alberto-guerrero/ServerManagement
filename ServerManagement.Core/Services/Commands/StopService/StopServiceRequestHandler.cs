@@ -1,12 +1,16 @@
 ﻿using MediatR;
-using ServerManagement.Core.Requests.Services;
 using System.ServiceProcess;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.ServiceProcess.ServiceControllerStatus;
 
-namespace ServerManagement.Core.Handlers.Services
+namespace ServerManagement.Core.Services.Commands.StopService
 {
+    public class StopServiceRequest : MediatR.IRequest<ServiceControllerStatus>
+    {
+        public string ServiceName { get; set; }
+    }
+
     public class StopServiceRequestHandler : IRequestHandler<StopServiceRequest, ServiceControllerStatus>
     {
         public Task<ServiceControllerStatus> Handle(StopServiceRequest request, CancellationToken cancellationToken)

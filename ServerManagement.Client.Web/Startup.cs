@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ServerManagement.Core.Requests.Services;
 
 namespace ServerManagement.Client.Web
 {
@@ -23,7 +22,7 @@ namespace ServerManagement.Client.Web
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddMediatR(typeof(GetServiceList));
+            services.AddMediatR(typeof(Core.Services.Queries.GetServices.GetServicesRequestHandler));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

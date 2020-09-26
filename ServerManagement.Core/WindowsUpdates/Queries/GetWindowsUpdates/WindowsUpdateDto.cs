@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ServerManagement.Core.Responses.Updates
+namespace ServerManagement.Core.WindowsUpdates.Queries.GetWindowsUpdates
 {
-    public class WindowsUpdate
+    public class WindowsUpdateDto
     {
         const string microsoftKbUrl = "https://support.microsoft.com/en-us/help/";
 
         public string UpdateId { get; set; }
         public DateTime InstallDate { get; set; }
-        public string ExternalLink => (microsoftKbUrl + ExtractKbNumber(UpdateId)) ?? string.Empty;
+        public string ExternalLink => microsoftKbUrl + ExtractKbNumber(UpdateId) ?? string.Empty;
 
         private string ExtractKbNumber(string updateId)
         {
