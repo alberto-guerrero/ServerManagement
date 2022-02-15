@@ -1,0 +1,37 @@
+﻿@page "/ServiceLogs/{servicePath}"
+@using ServerManagement.Core.Services.Queries.GetServiceLogs
+
+@inject MediatR.IMediator Mediator;
+
+<h3>Service Logs</h3>
+
+@if (string.IsNullOrWhiteSpace(logText))
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+<div id="container" style="overflow: scroll; height: 84vh; width: 100%">
+    @((MarkupString)logText.Replace("\n", "<br />"))
+</div>
+}
+
+@code {
+    [Parameter]
+    public string ServicePath { get; set; }
+
+    private string logText;
+
+    protected override async Task OnInitializedAsync()
+    {
+        logText = await GetLogs(ServicePath);
+    }
+
+    private async Task<string> GetLogs(string servicePath)
+    {
+        return await Mediator.Send(new GetServiceLogs
+        {
+            ServicePath = servicePath
+        });
+    }
+}

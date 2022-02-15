@@ -1,13 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace ServerManagement.Client.Web
 {
@@ -20,6 +14,14 @@ namespace ServerManagement.Client.Web
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((_, config) =>
+                {
+                    config.AddJsonFile("appsettings.json", false);
+                    config.AddJsonFile($"appsettings.{Environment.MachineName}.json", true, true);
+                    config.AddEnvironmentVariables();
+                    if (args != null)
+                        config.AddCommandLine(args);
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
