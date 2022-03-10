@@ -3,7 +3,12 @@
 @using ServerManagement.Core.Services.Queries.GetServices;
 @using ServerManagement.Core.Services.Commands.StartService;
 @using ServerManagement.Core.Services.Commands.StopService;
+@using ServerManagement.Client.Web.Configuration;
+@using ServerManagement.Core.Services.Queries.GetServiceLogs;
+
 @inject MediatR.IMediator Mediator;
+@inject GetServiceSettings ServiceSettings;
+@inject NavigationManager NavigationManager;
 
 <h1>Services</h1>
 
@@ -43,6 +48,7 @@ else
         <tbody>
             @foreach (var service in services)
             {
+                var showLogs = !HasLogs(service.PathName);
                 <tr>
                     <td>
                         <div>
@@ -54,6 +60,7 @@ else
                             <div class="dropdown-menu @(showActionMenu? "show":"")">
                                 <input type="button" class="dropdown-item" @onclick="e => StopService(service)" value="Stop Service" />
                                 <input type="button" class="dropdown-item" @onclick="e => StartService(service)" value="Start Service" />
+                                <input hidden="@showLogs" type="button" class="dropdown-item" @onclick="e => NavigateToServiceLogs(service.PathName)" value="Logs" />
                             </div>
                         </div>
                     </td>
@@ -70,7 +77,11 @@ else
 @code {
     private List<ServiceDto> services;
 
-    protected override async Task OnInitializedAsync() => await GetServices();
+    protected override async Task OnInitializedAsync()
+    {
+        searchText = ServiceSettings.DefaultSearchText;
+        await GetServices();
+    }
 
     public string classState(string state)
     {
@@ -101,6 +112,19 @@ else
                         || service.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase);
             }
         });
+    }
+
+    private async Task NavigateToServiceLogs(string servicePath)
+    {
+        NavigationManager.NavigateTo($"ServiceLogs/{Uri.EscapeDataString(servicePath)}");
+    }
+
+    private bool HasLogs(string servicePath)
+    {
+        return Mediator.Send(new HasServiceLogs
+        {
+            ServicePath = servicePath
+        }).Result;
     }
 
     private void StopService(ServiceDto service)

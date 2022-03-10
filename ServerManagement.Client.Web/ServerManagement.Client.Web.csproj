@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ServerManagement.Core\ServerManagement.Core.csproj" />
+    <ProjectReference Include="..\ServerManagement.Utilities.Log4NetDetection\ServerManagement.Utilities.Log4NetDetection.csproj" />
   </ItemGroup>
 
 </Project>

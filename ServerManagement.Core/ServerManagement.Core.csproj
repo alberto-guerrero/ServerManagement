@@ -1,15 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>ServerManagement.Core</AssemblyName>
     <RootNamespace>ServerManagement.Core</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Web.Administration" Version="11.1.0" />
     <PackageReference Include="System.Management" Version="4.7.0" />
     <PackageReference Include="System.ServiceProcess.ServiceController" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ServerManagement.Utilities.LogDetection\ServerManagement.Utilities.LogDetection.csproj" />
   </ItemGroup>
 
 </Project>

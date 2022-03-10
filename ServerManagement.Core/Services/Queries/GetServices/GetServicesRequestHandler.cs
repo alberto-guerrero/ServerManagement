@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Management;
 using System.Threading;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ServerManagement.Core.Services.Queries.GetServices
 {
-    public class GetServices : MediatR.IRequest<List<ServiceDto>>
+    public class GetServices : IRequest<List<ServiceDto>>
     {
         public string ComputerName { get; set; } = Environment.MachineName;
 
@@ -41,6 +40,7 @@ namespace ServerManagement.Core.Services.Queries.GetServices
                     LogOnAs = m["StartName"]?.ToString() ?? string.Empty,
                     State = m["State"]?.ToString() ?? string.Empty
                 })
+                .OrderBy(p => p.DisplayName)
                 .Where(request.Filter)
                 .ToList();
 

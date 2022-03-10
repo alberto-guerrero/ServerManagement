@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ServerManagement.Client.Web.Configuration;
+using ServerManagement.Utilities.Log4NetDetection;
+using ServerManagement.Utilities.LogDetection;
 
 namespace ServerManagement.Client.Web
 {
@@ -20,9 +23,14 @@ namespace ServerManagement.Client.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton(Configuration.GetSection("GetServiceSettings").Get<GetServiceSettings>());
+            services.AddSingleton<ILogDetector, Log4NetDetector>();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddMediatR(typeof(Core.Services.Queries.GetServices.GetServicesRequestHandler));
+            services.AddMediatR(typeof(Core.Services.Queries.GetServiceLogs.HasServiceLogsRequestHandler));
+            services.AddMediatR(typeof(Core.Services.Queries.GetServiceLogs.GetServiceLogsRequestHandler));
+            services.AddMediatR(typeof(Core.IIS.Queries.GetApplicationPools.GetApplicationPoolRequestHandler));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
