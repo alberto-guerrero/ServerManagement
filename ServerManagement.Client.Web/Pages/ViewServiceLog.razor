@@ -5,7 +5,7 @@
 
 <h3>Service Logs</h3>
 
-@if (string.IsNullOrWhiteSpace(logText))
+@if (logText == null)
 {
     <p><em>Loading...</em></p>
 }

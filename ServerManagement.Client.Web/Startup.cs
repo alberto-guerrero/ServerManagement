@@ -30,6 +30,7 @@ namespace ServerManagement.Client.Web
             services.AddMediatR(typeof(Core.Services.Queries.GetServices.GetServicesRequestHandler));
             services.AddMediatR(typeof(Core.Services.Queries.GetServiceLogs.HasServiceLogsRequestHandler));
             services.AddMediatR(typeof(Core.Services.Queries.GetServiceLogs.GetServiceLogsRequestHandler));
+            services.AddMediatR(typeof(Core.IIS.Queries.GetApplicationPools.GetApplicationPoolRequestHandler));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

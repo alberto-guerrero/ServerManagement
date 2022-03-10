@@ -20,10 +20,18 @@ namespace ServerManagement.Core.Services.Queries.GetServiceLogs
             _logDetector = logDetector;
         }
 
-        public Task<string> Handle(GetServiceLogs request, CancellationToken cancellationToken)
+        public async Task<string> Handle(GetServiceLogs request, CancellationToken cancellationToken)
         {
             var logFile = _logDetector.GetLogFilePath(request.ServicePath);
-            return File.ReadAllTextAsync(logFile, cancellationToken);
+
+            var logFileStream = new FileStream(logFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var logFileReader = new StreamReader(logFileStream);
+
+            var content = await logFileReader.ReadToEndAsync();
+
+            logFileReader.Close();
+            logFileStream.Close();
+            return content;
         }
     }
 }

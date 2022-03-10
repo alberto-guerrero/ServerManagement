@@ -1,0 +1,132 @@
+﻿@page "/app-pools"
+
+@using ServerManagement.Core.IIS.Queries.GetApplicationPools;
+@using ServerManagement.Core.IIS.Commands.StopApplicationPool
+@using ServerManagement.Core.IIS.Commands.StartApplicationPool
+@using ServerManagement.Core.IIS.Commands.RecycleApplicationPool
+@inject MediatR.IMediator Mediator;
+
+<h1>Application Pools</h1>
+
+@if (applicationPools == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search"
+               aria-label="Search" aria-describedby="basic-addon2"
+               @bind="searchText"
+               @onkeyup="@(async e=>
+                           {
+                               if (e.Key == "Enter")
+                                   await GetApplicationPools();
+                           })">
+        <div class="input-group-append">
+            <button class="btn btn-outline-secondary"
+                    type="button"
+                    @onclick="async e=> { await GetApplicationPools(); }">
+                Search
+            </button>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Display Name</th>
+                <th>State</th>
+                <th>Startup Type</th>
+                <th>Run As</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var applicationPool in applicationPools)
+            {
+                <tr>
+                    <td>
+                        <div>
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                                    @onclick="e => this.showActionMenu=!this.showActionMenu "
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="oi oi-ellipses"></span>
+                            </button>
+                            <div class="dropdown-menu @(showActionMenu ? "show":"")">
+                                <input type="button" class="dropdown-item" @onclick="e => StartApplicationPool(applicationPool)" value="Start Application Pool" />
+                                <input type="button" class="dropdown-item" @onclick="e => StopApplicationPool(applicationPool)" value="Stop Application Pool" />
+                                <input type="button" class="dropdown-item" @onclick="e => RecycleApplicationPool(applicationPool)" value="Recycle Application Pool" />
+                            </div>
+                        </div>
+                    </td>
+                    <td>@applicationPool.Name</td>
+                    <td class="@classState(applicationPool.Status)">@applicationPool.Status</td>
+                    <td>@applicationPool.ManagedPipeline</td>
+                    <td>@applicationPool.RunTimeVersion</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<ApplicationPoolDto> applicationPools;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetApplicationPools();
+    }
+
+    private bool showActionMenu;
+    private string searchText;
+
+    private async Task GetApplicationPools()
+    {
+        applicationPools = await Mediator.Send(new GetApplicationPool
+        {
+            Filter = (applicationPool) =>
+            {
+                if (string.IsNullOrEmpty(searchText))
+                    return true;
+
+                return applicationPool.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase)
+                        || applicationPool.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+            }
+        });
+    }
+
+    public string classState(string state)
+    {
+        switch (state)
+        {
+            case "Started":
+                return "text-success";
+            case "Stopped":
+                return "text-danger";
+            default:
+                return null;
+        }
+    }
+
+    private void StopApplicationPool(ApplicationPoolDto appPool)
+    {
+        var state = Mediator.Send(new StopApplicationPoolRequest { ApplicationPoolName = appPool.Name });
+        appPool.Status = state.Result;
+        showActionMenu = false;
+    }
+
+    private void StartApplicationPool(ApplicationPoolDto appPool)
+    {
+        var state = Mediator.Send(new StartApplicationPoolRequest { ApplicationPoolName = appPool.Name });
+        appPool.Status = state.Result;
+        showActionMenu = false;
+    }
+
+    private void RecycleApplicationPool(ApplicationPoolDto appPool)
+    {
+        var state = Mediator.Send(new RecycleApplicationPoolRequest { ApplicationPoolName = appPool.Name });
+        appPool.Status = state.Result;
+        showActionMenu = false;
+    }
+
+}
